@@ -109,6 +109,12 @@ EXPORTED void desmume_savestate_slot_save(int index);
 EXPORTED BOOL desmume_savestate_slot_exists(int index);
 EXPORTED char* desmume_savestate_slot_date(int index);
 
+// ---- Speed / headless mode additions ----
+EXPORTED void desmume_set_frameskip(int frameskip);
+EXPORTED void desmume_set_sound_enabled(int enabled);    // 0 = disabled, 1 = enabled
+EXPORTED void desmume_set_3d_renderer(int renderer);     // 0=NONE, 1=SW, 2=GL
+EXPORTED void desmume_set_jit_enabled(int enabled, int block_size); // enabled=0/1, block_size=1-100
+
 // Battery save (backup memory) import/export
 
 /**

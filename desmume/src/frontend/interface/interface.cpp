@@ -63,17 +63,21 @@ std::wstring s2ws(const std::string& str)
     return converter.from_bytes(str);
 }
 
+// Module-level state for sound (default: enabled)
+static int _sound_enabled = 1;
+
 EXPORTED int desmume_init()
 {
     NDS_Init();
-    // TODO: Option to disable audio
-    SPU_ChangeSoundCore(SNDCORE_SDL, 735 * 4);
-    SPU_SetSynchMode(0, 0);
-    SPU_SetVolume(100);
-    SNDSDLSetAudioVolume(100);
-    // TODO: Option to configure 3d
-    GPU->Change3DRendererByID(RENDERID_SOFTRASTERIZER);
-    // TODO: Without SDL init?
+    if (_sound_enabled) {
+        SPU_ChangeSoundCore(SNDCORE_SDL, 735 * 4);
+        SPU_SetSynchMode(0, 0);
+        SPU_SetVolume(100);
+        SNDSDLSetAudioVolume(100);
+    } else {
+        SPU_ChangeSoundCore(SNDCORE_DUMMY, 0);
+    }
+    GPU->Change3DRendererByID(RENDERID_SOFTRASTERIZER); // default; overridable
     if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) == -1) {
         fprintf(stderr, "Error trying to initialize SDL: %s\n",
                 SDL_GetError());
@@ -700,4 +704,62 @@ EXPORTED void desmume_movie_replay()
 EXPORTED void desmume_movie_stop()
 {
     FCEUI_StopMovie();
+}
+
+// Module-level frameskip state
+static int _frameskip_count = 0;
+static int _frameskip_current = 0;
+
+EXPORTED void desmume_set_frameskip(int frameskip)
+{
+    _frameskip_count = frameskip;
+}
+
+// IMPORTANT: call this INSTEAD of desmume_cycle() when using frameskip
+EXPORTED void desmume_cycle_with_frameskip(BOOL with_joystick)
+{
+    if (_frameskip_count > 0) {
+        if (_frameskip_current < _frameskip_count) {
+            NDS_SkipNextFrame();   // tells frameSkipper to skip 2D+3D render
+            _frameskip_current++;
+        } else {
+            _frameskip_current = 0;
+            NDS_OmitFrameSkip(2); // force a full render on this frame
+        }
+    }
+    // Run one NDS frame
+    NDS_exec<false>();
+    SPU_Emulate_user();
+}
+
+
+EXPORTED void desmume_set_sound_enabled(int enabled)
+{
+    _sound_enabled = enabled;
+    if (enabled) {
+        SPU_ChangeSoundCore(SNDCORE_SDL, 735 * 4);
+        SPU_SetSynchMode(0, 0);
+        SPU_SetVolume(100);
+    } else {
+        SPU_ChangeSoundCore(SNDCORE_DUMMY, 0);
+    }
+}
+
+EXPORTED void desmume_set_3d_renderer(int renderer)
+{
+    // 0 = NULL/NONE (fastest, no 3D), 1 = software rasterizer, 2 = OpenGL
+    // IDs match gpu3DList[] defined at top of interface.cpp:
+    //   [0] = gpu3DNull, [1] = gpu3DRasterize
+    GPU->Change3DRendererByID(renderer);
+}
+
+EXPORTED void desmume_set_jit_enabled(int enabled, int block_size)
+{
+#ifdef HAVE_JIT
+    CommonSettings.use_jit = (enabled == 1);
+    if (block_size < 1 || block_size > 100)
+        block_size = 100;
+    CommonSettings.jit_max_block_size = block_size;
+    arm_jit_sync();   // re-init JIT state if needed
+#endif
 }
