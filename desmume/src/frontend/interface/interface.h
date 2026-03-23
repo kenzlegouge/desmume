@@ -102,6 +102,7 @@ EXPORTED void desmume_draw_raw_as_rgbx(u8 *buffer);
 
 // ---- Speed / headless mode additions ----
 EXPORTED void desmume_set_frameskip(int frameskip);
+EXPORTED void desmume_cycle_with_frameskip(BOOL with_joystick);
 EXPORTED void desmume_set_sound_enabled(int enabled);    // 0 = disabled, 1 = enabled
 EXPORTED void desmume_set_3d_renderer(int renderer);     // 0=NONE, 1=SW, 2=GL
 EXPORTED void desmume_set_jit_enabled(int enabled, int block_size); // enabled=0/1, block_size=1-100
