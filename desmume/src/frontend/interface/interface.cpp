@@ -764,3 +764,7 @@ EXPORTED void desmume_set_jit_enabled(int enabled, int block_size)
     arm_jit_sync();   // re-init JIT state if needed
 #endif
 }
+
+EXPORTED void desmume_set_num_cores(int n) {
+    CommonSettings.num_cores = n;
+}

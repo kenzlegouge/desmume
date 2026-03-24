@@ -106,6 +106,7 @@ EXPORTED void desmume_cycle_with_frameskip(BOOL with_joystick);
 EXPORTED void desmume_set_sound_enabled(int enabled);    // 0 = disabled, 1 = enabled
 EXPORTED void desmume_set_3d_renderer(int renderer);     // 0=NONE, 1=SW, 2=GL
 EXPORTED void desmume_set_jit_enabled(int enabled, int block_size); // enabled=0/1, block_size=1-100
+EXPORTED void desmume_set_num_cores(int n);
 
 EXPORTED void desmume_savestate_clear();
 EXPORTED BOOL desmume_savestate_load(const char *file_name);
