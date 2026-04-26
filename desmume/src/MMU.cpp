@@ -161,7 +161,7 @@ void mmu_log_debug_ARM7(u32 adr, const char *fmt, ...)
 //#define LOG_DMA2
 //#define LOG_DIV
 
-extern "C" __declspec(dllexport) MMU_struct MMU;
+MMU_struct MMU;
 MMU_struct_new MMU_new;
 MMU_struct_timing MMU_timing;
 

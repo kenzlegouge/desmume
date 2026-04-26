@@ -507,7 +507,7 @@ struct MMU_struct_new
 	bool is_dma(const u32 adr);
 };
 
-extern "C" __declspec(dllexport) MMU_struct MMU;
+extern MMU_struct MMU;
 extern MMU_struct_new MMU_new;
 
 
