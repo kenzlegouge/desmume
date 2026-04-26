@@ -87,8 +87,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Fastbuild|Win32'">
     <Link>
-      <LargeAddressAware>tr
-      <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>ue</LargeAddressAware>
+      <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
