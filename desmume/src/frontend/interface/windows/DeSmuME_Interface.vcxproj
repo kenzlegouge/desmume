@@ -87,12 +87,19 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Fastbuild|Win32'">
     <Link>
-      <LargeAddressAware>true</LargeAddressAware>
+      <LargeAddressAware>tr
+      <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>ue</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Link>
       <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Link>
+      <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
+      <MapFileName>output.map</MapFileName>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -1,3 +1,3 @@
 LIBRARY libdesmume
 EXPORTS
-    MMU = ?MMU@@3UMMU_struct@@A DATA
+   MMU = ?MMU@@3UMMU_struct@@A DATA
